@@ -46,6 +46,7 @@ export default {
   data() {
     return {
       items: [
+        // TP2: Step 1
         {
           label: 'Burger',
           img_src: './src/assets/image/burger-removebg-preview.png',
