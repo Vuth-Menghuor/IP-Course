@@ -11,6 +11,11 @@ export default {
         label: String,
         background_color: String,
         button_color: String,
+    },
+    methods: {
+      shopNow() {
+        alert("Let's shop: " + this.label);
+      }
     }
 }
 </script>
@@ -22,7 +27,7 @@ export default {
                 {{ label }}
             </div>
             <div class="button">
-                <Shop_Button :background_color="button_color"/>
+                <Shop_Button :background_color="button_color" @click="shopNow"/>
             </div>
         </div>
         <img :src="img_src" alt="image_source">
