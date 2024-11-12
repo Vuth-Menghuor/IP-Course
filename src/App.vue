@@ -5,48 +5,60 @@
 
 <template>
   <div class="container">
-    <template v-for="item in items" key="item">
+    <template v-for="item in Categories" key="item">
       <Category_Component 
-      :label="item.label"
-      :img_src="item.img_src"
-      :quantity="item.quantity"
-      :background_color="item.background_color"
-      :radius_color="item.radius_color" 
-      />
+      :label="item.name"
+      :img_src="item.image"
+      :quantity="item.productCount"
+      :background_color="item.color"
+      />  
     </template>
   </div>
 
   <div class="container">
-    <template v-for="item in promotions" :key="item.label">
+    <template v-for="item in promotions" :key="item">
       <Promotion_Component 
-        :label="item.label"
-        :background_color="item.background_color"
-        :img_src="item.img_src"
-        :button_color="item.button_color"
-        :class="{ 'orange-juice-image': item.img_src.includes('Orange juice.png') }"
+        :label="item.title"
+        :background_color="item.color"
+        :img_src="item.image"
+        :button_color="item.buttonColor"
       />
     </template>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import Category_Component from './components/Category_Component.vue';
 import Promotion_Component from './components/Promotion_Component.vue';
+
 
 export default {
   components: {
     Category_Component,
-    Promotion_Component
+    Promotion_Component 
   },
   methods: {
     getQuantity() {
       return Math.floor(Math.random() * 50)
+    },
+    fetchCategories() {
+      axios.get("http://localhost:3000/api/categories").then( result => {
+        this.Categories = result.data;
+        console.log(this.Categories)
+      })
+    },
+    fetchPromotions() {
+      axios.get("http://localhost:3000/api/promotions").then( result => {
+        this.promotions = result.data;
+        console.log(this.promotions)
+      })
     }
-  },
+    },
   data() {
     return {
-      items: [
-        // TP2: Step 1
+      Categories: [
+        
         {
           label: 'Burger',
           img_src: './src/assets/image/burger-removebg-preview.png',
@@ -126,7 +138,6 @@ export default {
           img_src: './src/assets/image/Onion.png',
           background_color: '#e5e7eb',
           button_color: '#4ade80'
-          
         },
         {
           label: 'Make your Breakfast\nHealthy and Easy',
@@ -145,6 +156,10 @@ export default {
       ]
       
     }
+  },
+  mounted() {
+    this.fetchCategories();
+    this.fetchPromotions();
   }
 }
 </script>

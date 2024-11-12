@@ -21,7 +21,7 @@ export default {
 </script>
 
 <template>
-    <div class="container">
+    <div :class="img_src==='./src/assets/image/Orange juice.png'? 'container orange-juice-image' : 'container'"  >
         <div class="inner-container">
             <div class="label quicksand-regular">
                 {{ label }}
