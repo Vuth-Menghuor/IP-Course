@@ -1,8 +1,3 @@
-
-<script setup>
-// import { RouterLink, RouterView } from 'vue-router';
-</script>
-
 <template>
   <div class="container">
     <template v-for="item in Categories" key="item">
@@ -16,7 +11,7 @@
   </div>
 
   <div class="container">
-    <template v-for="item in promotions" :key="item">
+    <template v-for="item in Promotions" :key="item">
       <Promotion_Component 
         :label="item.title"
         :background_color="item.color"
@@ -28,23 +23,19 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 import Category_Component from './components/Category_Component.vue';
 import Promotion_Component from './components/Promotion_Component.vue';
-
-
-export const useProductStore = defineStore('product', {
-  state: () => ({
-       groups: [],
-       promotions: [],
-       categories: [],
-       products: []
-  }),
-  getters: {},
-  actions: {},
-})
+import { useProductStore } from './store/productStore';
+import { mapState } from 'pinia';
 
 export default {
+  setup() {
+    const store = useProductStore()
+    return {
+      store
+    }
+  },
   components: {
     Category_Component,
     Promotion_Component 
@@ -52,125 +43,41 @@ export default {
   methods: {
     getQuantity() {
       return Math.floor(Math.random() * 50)
+      },
     },
-    fetchCategories() {
-      axios.get("http://localhost:3000/api/categories").then( result => {
-        this.Categories = result.data;
-        console.log(this.Categories)
-      })
-    },
-    fetchPromotions() {
-      axios.get("http://localhost:3000/api/promotions").then( result => {
-        this.promotions = result.data;
-        console.log(this.promotions)
-      })
-    }
-    },
-  data() {
-    return {
-      Categories: [
-        
-        {
-          label: 'Burger',
-          img_src: './src/assets/image/burger-removebg-preview.png',
-          quantity: this.getQuantity(),
-          background_color: "#fef3c7",
-          radius_color: "#fed7aa",
-        },
-        {
-          label: 'Peach',
-          img_src: './src/assets/image/Peach.png',
-          quantity: this.getQuantity(),
-          background_color: "#ffedd5",
-          radius_color: "#ffedd5",
-        },
-        {
-          label: 'Oganic Kiwi',
-          img_src: './src/assets/image/Kiwi.png',
-          quantity: this.getQuantity(),
-          background_color: "#dcfce7",
-          radius_color: "#dcfce7",
-        },
-        {
-          label: 'Red Apple',
-          img_src: './src/assets/image/Red_Apple.png',
-          quantity: this.getQuantity(),
-          background_color: "#fee2e2",
-          radius_color: "#fee2e2",
-        },
-        {
-          label: 'Snacks',
-          img_src: './src/assets/image/Snacks.png',
-          quantity: this.getQuantity(),
-          background_color: "#ccfbf1",
-          radius_color: "#ccfbf1",
-        },
-        {
-          label: 'Black plum',
-          img_src: './src/assets/image/black_plum.png',
-          quantity: this.getQuantity(),
-          background_color: "#f3e8ff",
-          radius_color: "#f3e8ff",
-        },
-        {
-          label: 'Vegetable',
-          img_src: './src/assets/image/Vegetable.png',
-          quantity: this.getQuantity(),
-          background_color: "#dcfce7",
-          radius_color: "#dcfce7",
-        },
-        {
-          label: 'Headphone',
-          img_src: './src/assets/image/Headphone.png',
-          quantity: this.getQuantity(),
-          background_color: "#e2e8f0",
-          radius_color: "#e2e8f0",
-        },
-        {
-          label: 'Pancakes',
-          img_src: './src/assets/image/Pancakes.png',
-          quantity: this.getQuantity(),
-          background_color: "#ffe4e6",
-          radius_color: "#ffe4e6",
-        },
-        {
-          label: 'Orange',
-          img_src: './src/assets/image/Orange.png',
-          quantity: this.getQuantity(),
-          background_color: "#ffedd5",
-          radius_color: "#ffedd5",
-        },
-        
-        
-      ],
-      promotions: [
-        {
-          label: 'Everyday Fresh &\nClean with Our\nProducts',
-          img_src: './src/assets/image/Onion.png',
-          background_color: '#e5e7eb',
-          button_color: '#4ade80'
-        },
-        {
-          label: 'Make your Breakfast\nHealthy and Easy',
-          img_src: './src/assets/image/Orange juice.png',
-          background_color: '#ffedd5',
-          button_color: '#4ade80'
-          
-        },
-        {
-          label: 'The best Organic\nProducts Online',
-          img_src: './src/assets/image/Organic products.png',
-          background_color: '#dcfce7',
-          button_color: '#60a5fa'
-          
-        },
-      ]
-      
-    }
+    data() {
+      return {
+        currentGroupName: 'Milks & Diaries'
+      }
   },
-  mounted() {
-    this.fetchCategories();
-    this.fetchPromotions();
+
+    computed: {
+    ...mapState(useProductStore, {
+      Categories: "categories",
+      Promotions: "promotions",
+      groups: "groups",
+
+      categories(store) {
+        const cats = store.getCategoriesByGroup(this.currentGroupName)
+        console.log("Categories by group name")
+        console.log(cats)
+        return cats
+      },
+      
+      popularProducts(store) {
+        const products = store.getPopularProducts()
+        console.log("Popular products")
+        console.log(products)
+        return products
+      }      
+    }),
+  },
+
+  async mounted() {
+    await this.store.fetchCategories(); 
+    await this.store.fetchPromotions();
+    await this.store.fetchProducts()
+    await this.store.fetchGroups()
   }
 }
 </script>
