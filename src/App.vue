@@ -33,6 +33,17 @@ import Category_Component from './components/Category_Component.vue';
 import Promotion_Component from './components/Promotion_Component.vue';
 
 
+export const useProductStore = defineStore('product', {
+  state: () => ({
+       groups: [],
+       promotions: [],
+       categories: [],
+       products: []
+  }),
+  getters: {},
+  actions: {},
+})
+
 export default {
   components: {
     Category_Component,
