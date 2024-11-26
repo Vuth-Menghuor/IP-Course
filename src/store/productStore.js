@@ -6,25 +6,31 @@ export const useProductStore = defineStore('product', {
          groups: [],
          promotions: [],
          categories: [],
-         products: []
+         products: [],
+         currentProductGroup: "All",
     }),
     getters: {
      getCategoriesByGroup(groupName) {
-          return (groupName) => this.categories.find((category) => category.group === groupName)
+          return (groupName) => this.categories.filter((category) => category.group === groupName)
      },
 
-     getProductsByGroup(groupName) {
-          return (groupName) => this.products.find((product) => product.group === groupName)
+     getProductsByGroup() {
+          return () => {
+               if(this.currentProductGroup === "All") 
+                    return this.products
+               return this.products.filter((product) => product.group === this.currentProductGroup)
+          }
      },
 
      getProductsByCategory(categoryId) {
-          return (categoryId) => this.products.find((product) => product.categoryId === categoryId)
-
+          console.log("from store")
+          console.log(this.currentProductGroup)
+          return (categoryId) => this.products.filter((product) => product.categoryId === categoryId)
      },
 
      getPopularProducts() {
           const countPopular = 10;
-          const popular = () => this.products.find((product) => product.countSold > countPopular)
+          const popular = () => this.products.filter((product) => product.countSold > countPopular)
           return popular
      },
 

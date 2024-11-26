@@ -26,7 +26,6 @@ button {
   padding: 10px;
   border-radius: 4px;
   border: none;
-  margin-top: 20px;  
 }
 
 .quicksand-regular {

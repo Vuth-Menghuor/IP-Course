@@ -57,6 +57,7 @@ export default {
     border: 1px solid v-bind(radiusColor);
     margin: 8px;
     padding-right: 40px;
+    overflow: hidden;
   }
 
   .inner-container {
