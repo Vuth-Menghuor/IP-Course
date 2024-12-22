@@ -5,8 +5,8 @@
             <div class="link">
                 <button v-for="page in pages" :key="page.name">
                     <router-link 
-                        :to="page.link" 
-                        :class="{ active: isActive(page.link) }">
+                        @click="passMessage()"
+                        :to="page.link">
                         {{ page.name }}
                     </router-link>
                 </button>
@@ -16,22 +16,40 @@
 </template>
 
 <script>
+import { useMessageStore } from '@/stores/pageStore';
+
 export default {
     name: "DynamicHeader",
+    setup() {
+        const store = useMessageStore()
+        return {
+            store,
+        }
+    },
     data() {
         return {
             pages: [
-                { name: "Page1", link: "/page1" },
-                { name: "Page2", link: "/page2" },
-                { name: "Page3", link: "/page3" },
+                { name: "Page1", link: "/page/1" },
+                { name: "Page2", link: "/page/2" },
+                { name: "Page3", link: "/page/3" },
             ],
+            message: "",
         };
     },
     methods: {
-        isActive(link) {
-            return this.$route.path === link;
+        passMessage() {
+            console.log("hello")
+            this.store.lastPage = this.curPage;
+            this.store.pages[this.curPage] = this.store.message; 
+            this.store.message = ""; 
+        },
+    },
+    computed: {
+        curPage() {
+            return this.$route.params.pageNumber
         }
     }
+
 };
 </script>
 
@@ -43,9 +61,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 50px;
-    color: black;
-    border: 1px solid black;
+    color: white;
+    border: 1px solid #4C585B;
     border-bottom: none;
+    border-radius: 10px 10px 0px 0px;
+    background-color: #4C585B;
 }
 .link {
     display: flex;
@@ -54,7 +74,8 @@ export default {
 .link button {
     padding: 10px;
     border: none;
-    background-color: white;
+    color: white;
+    background-color: #4C585B;
 }
 span {
     font-size: 20px;
@@ -64,13 +85,15 @@ span {
 a {
     font-family: "Roboto Mono", serif;
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 20px;
     font-weight: 600;
+    transition-duration: 0.2s;
 }
 
-a.active {
-    color: red; 
-    font-weight: 700;
+a.router-link-active {
+    color:black; 
+    font-weight: bolder;
+    
 }
 </style>

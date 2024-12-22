@@ -12,11 +12,13 @@
     justify-content: center;
     border: 1px solid black;
     border-top: none;
+    background-color: #4C585B;
+    border-radius: 0px 0px 10px 10px;
 }
 .footer-sec {
-    color: black;
+    color: white;
     font-size: 20px;
-    padding: 60px;
+    padding: 40px;
     font-family: "Roboto Mono", serif;
     font-weight: 600;
 }

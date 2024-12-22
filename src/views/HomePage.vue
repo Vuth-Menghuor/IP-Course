@@ -1,36 +1,57 @@
 <template>
     <headerComponent/>
-    <body>
-        <div class="body">
-            <div class="menu-sec">
-                <span class="menu">Menu</span>
-                <section class="section">
-                    <a href="">Section 1</a>
-                    <a href="">Section 2</a>
-                    <a href="">Section 3</a>
-                    <a href="">Section 4</a>
-                    <div class="space"></div>
-                </section>
-            </div>
-            <div class="article">
-                <article class="article-sec">
-                    <span></span>
-                </article>
+    <div class="body">
+        <div class="menu-sec">
+            <span class="menu">Menu</span>
+            <section class="section">
+                <template v-for="(section, index) in menuSections" :key="index">
+                    <RouterLink :to="`/page/${$route.params.pageNumber}` + section.link">
+                        {{ section.name }}  
+                    </RouterLink> 
+                </template>
+            </section>
+            <div class="space">
+                <img src="../assets/images/robot-amico.png">
             </div>
         </div>
-    </body>
+        <div class="article">
+            <RouterView />
+            <div class="input-type">
+                <p>Message:</p>
+                <input type="text" v-model="store.message">
+            </div>
+        </div>  
+    </div>
     <footerComponent/>
 </template>
 
 <script>
 import footerComponent from '@/components/footerComponent.vue';
 import headerComponent from '@/components/headerComponent.vue';
+import { useMessageStore } from '@/stores/pageStore';
+
 
 export default {
+    setup() {
+        const store = useMessageStore()
+        return {
+            store,
+        }
+    },
     components: {
         headerComponent,
-        footerComponent
-    }
+        footerComponent,
+    },
+    data() {
+        return {
+            menuSections: [
+                { name: "Section 1", link: "/section/1"},
+                { name: "Section 2", link: "/section/2"},
+                { name: "Section 3", link: "/section/3"},
+                { name: "Section 4", link: "/section/4"},
+            ],
+        }
+    },
 }
 </script>
 
@@ -42,6 +63,7 @@ export default {
     justify-content:space-between;
     align-items: center;
     border: 1px solid black;
+    background-color: #F4EDD3;
     font-family: "Roboto Mono", serif;
 }
 .menu-sec {
@@ -80,18 +102,48 @@ export default {
     border-left: none;
     border-right: none;
     border-top: none;
+    transition-duration: 0.3s;
 }
+
+.section a.router-link-active {
+    background-color: #4C585B;
+    color: white;
+}
+
 .article {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     width: 100%;
 }
-.article-sec {
-    font-size: 20px;
-    font-weight: 600;
-}
 .space {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 20vh;
+}
+.space > img {
+    height: 150px;
+    width: auto;
+}
+.input-type {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.input-type > input {
+    padding: 10px;
+    height: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: transparent;
+    border-radius: 8px;
+}
+.input-type p {
+    font-family: "Roboto Mono", serif;
+    font-size: 20px;
+    font-weight: 500;
 }
 </style>
   
