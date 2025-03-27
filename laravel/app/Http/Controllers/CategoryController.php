@@ -14,23 +14,23 @@ class CategoryController extends Controller
     }    
 
     // --- Post /api/categories
-    public function createCategory() {
-        $category = Category::create([
-            'name' => "New Category",
-        ]);
+    public function createCategory(Request $request) {
+        $category = new Category();
+        $category->name = $request->name;
         $category->save();
         return $category;
     }
 
     // --- Get /api/categories/{categoryId}
     public function getCategory($categoryId) {
-        return Category::find($categoryId);
+        $category = Category::find($categoryId);
+        return $category;
     }
 
     // --- Patch /api/categories/{categoryId}
-    public function updateCategory($categoryId) {
+    public function updateCategory(Request $request, $categoryId) {
         $category = Category::find($categoryId);
-        $category->name = "Goku";
+        $category->name = $request->name;
         $category->save();
         return $category;
     }

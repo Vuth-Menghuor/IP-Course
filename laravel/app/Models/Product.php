@@ -3,14 +3,33 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    protected $fillable = ['name','pricing','category_id'];
+    use SoftDeletes;
+
+    protected $dates = ['delete_at'];
+    protected $fillable = ['name', 'pricing', 'category_id'];
     //
-    
-    public function category() {
+
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
+    public function cart()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function wishlist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function order_product()
+    {
+        return $this->hasMany(OrderProduct::class);
+    }
 }

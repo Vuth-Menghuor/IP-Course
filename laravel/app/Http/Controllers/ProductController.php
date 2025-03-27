@@ -13,25 +13,25 @@ class ProductController extends Controller
     }
 
     // --- Post /api/categories
-    public function createProduct() {
-        $product = Product::create([
-            'category_id' => 1,
-            'name' => "New Product",
-            'pricing' => 500
-        ]);
+    public function createProduct(Request $request) {
+        $product = new Product;
+        $product->name = $request->name;
+        $product->pricing = $request->pricing;
+        $product->category_id = $request->category_id;
         $product->save();
         return $product;
     }
 
     // --- Get /api/products/{products}
     public function getProduct($productId) {
-        return Product::find($productId);
+        $product = Product::find($productId);
+        return $product;
     }
 
     // --- Patch /api/products/{productId}
-    public function updateProduct($productId) {
+    public function updateProduct(Request $request, $productId) {
         $product = Product::find($productId);
-        $product->name = "Heng Heng";
+        $product->name = $request->name; 
         $product->save();
         return $product;
     }
