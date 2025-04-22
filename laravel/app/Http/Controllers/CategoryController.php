@@ -15,16 +15,14 @@ class CategoryController extends Controller
 
     // --- Post /api/categories
     public function createCategory(Request $request) {
-        $category = new Category();
-        $category->name = $request->name;
-        $category->save();
+        $category = Category::create(['name' => $request->name]);
+        // $category->name = $request->name;
         return $category;
     }
 
     // --- Get /api/categories/{categoryId}
     public function getCategory($categoryId) {
-        $category = Category::find($categoryId);
-        return $category;
+        return Category::find($categoryId);
     }
 
     // --- Patch /api/categories/{categoryId}
