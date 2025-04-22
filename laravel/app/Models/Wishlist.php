@@ -12,12 +12,12 @@ class Wishlist extends Model
     protected $dates = ['delete_at'];
     protected $fillable = ['product_id', 'custmoer_id'];
 
-    public function products()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function customers()
+    public function customer()
     {
         return $this->belongsTo(Customer::class);
     }

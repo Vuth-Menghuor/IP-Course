@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -10,15 +12,26 @@ class Payment extends Model
     use SoftDeletes;
 
     protected $dates = ['delete_at'];
-    protected $fillable = ['order_id', 'customer_id'];
+    protected $fillable = ['order_id', 'customer_id', 'payment_date', 'amount', 'payment_method'];
 
-    public function customers()
+    public function customer()
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function orders()
+    public function order()
     {
         return $this->belongsTo(Order::class);
+    }
+
+    protected function paymentDate(): Attribute
+    {
+        return Attribute::make(
+            // Mutator: Convert input format to MySQL formate before saving
+            set: fn($value) => Carbon::createFromFormat('d/m/Y H:i:s', $value)->format('Y-m-d H:i:s'),
+
+            // Accessor: Convert  database format to user format when retrieving 
+            get: fn($value) => Carbon::parse($value)->format('d/m/Y H:i:s')
+        );
     }
 }

@@ -12,12 +12,12 @@ class OrderProduct extends Model
     protected $dates = ['delete_at'];
     protected $fillable = ['order_id', 'product_id'];
 
-    public function products()
+    public function product()
     {
         return $this->belongsTo(Product::class);
     }
 
-    public function orders()
+    public function order()
     {
         return $this->belongsTo(Order::class);
     }
