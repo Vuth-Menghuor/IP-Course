@@ -1,3 +1,44 @@
+// import {
+//   Get,
+//   Param,
+//   Controller,
+//   Post,
+//   Body,
+//   Patch,
+//   Delete,
+// } from '@nestjs/common';
+// import { UsersService } from './user.service';
+
+// @Controller('users')
+// export class UsersController {
+//   constructor(private readonly userService: UsersService) {}
+
+//   @Get('/:username')
+//   getUser(@Param('username') username: string) {
+//     return this.userService.getUser(username);
+//   }
+
+//   @Post('/users')
+//   createUser(
+//     @Body() body: { username: string; email: string; password: string },
+//   ) {
+//     return this.userService.createUser(body);
+//   }
+
+//   @Patch('/users/:username')
+//   updateUser(
+//     @Body() body: { username: string; email: string; password: string },
+//   ) {
+//     return this.userService.updateUser(body);
+//   }
+
+//   @Delete('/users/:username')
+//   deleteUser(@Param('username') username: string) {
+//     return this.userService.deleteUser(username);
+//   }
+// }
+
+// Chat
 import {
   Get,
   Param,
@@ -7,33 +48,39 @@ import {
   Patch,
   Delete,
 } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UsersService } from './user.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UsersService) {}
 
-  @Get('/:username')
-  getUser(@Param('username') username: string) {
-    return this.userService.getUser(username);
+  @Get('/:id')
+  getUser(@Param('id') id: string) {
+    return this.userService.findOne(Number(id));
   }
 
-  @Post('/users')
+  @Get()
+  getAllUser() {
+    return this.userService.findAll();
+  }
+
+  @Post()
   createUser(
     @Body() body: { username: string; email: string; password: string },
   ) {
-    return this.userService.createUser(body);
+    return this.userService.create(body);
   }
 
-  @Patch('/users/:username')
+  @Patch('/:id')
   updateUser(
-    @Body() body: { username: string; email: string; password: string },
+    @Param('id') id: string,
+    @Body() body: { username?: string; email?: string; password?: string },
   ) {
-    return this.userService.updateUser(body);
+    return this.userService.update(Number(id), body);
   }
 
-  @Delete('/users/:username')
-  deleteUser(@Param('username') username: string) {
-    return this.userService.deleteUser(username);
+  @Delete('/:id')
+  deleteUser(@Param('id') id: number) {
+    return this.userService.remove(id);
   }
 }

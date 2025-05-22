@@ -14,26 +14,38 @@ export class TasksController {
   constructor(private readonly taskService: TaskService) {}
 
   @Get('/:id')
-  getTask(@Param('id') id: string) {
+  getTask(@Param('id') id: number) {
     return this.taskService.getTask(id);
   }
+
+  @Get()
+  getAllTasks() {
+    return this.taskService.getAllTask();
+  }
+
   @Post('/')
   createTask(@Body() body: any) {
     return this.taskService.createTask(body);
   }
 
   @Patch('/:id/done')
-  markTaskAsDone(@Body() body: any, @Param('id') id: string) {
+  markTaskAsDone(
+    @Param('id') id: number,
+    @Body() body: { name?: string; description?: string },
+  ) {
     return this.taskService.updateTask(id, body);
   }
 
   @Patch('/:id/pending')
-  markTaskAsPending(@Body() body: any, @Param('id') id: string) {
+  markTaskAsPending(
+    @Param('id') id: number,
+    @Body() body: { name?: string; description: string },
+  ) {
     return this.taskService.updateTask(id, body);
   }
 
   @Delete('/:id')
-  deleteTask(@Param('id') id: string) {
+  deleteTask(@Param('id') id: number) {
     return this.taskService.deleteTask(id);
   }
 }
