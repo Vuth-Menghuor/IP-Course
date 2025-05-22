@@ -11,18 +11,18 @@
         >You have <span class="pending-num"> {{ nbOfTodo }} </span> tasks
         pending.</span
       >
-      <button class="clear-button">Clear All</button>
+      <button class="clear-button" @click="clearAll">Clear All</button>
     </div>
   </div>
 </template>
 <script>
-import { mapState } from "pinia";
-import AddTodo from "./components/AddTodo.vue";
-import TodoLists from "./components/TodoList.vue";
+import { mapState } from 'pinia';
+import AddTodo from './components/AddTodo.vue';
+import TodoLists from './components/TodoList.vue';
 
-import { useTodoStore } from "./stores/todo";
+import { useTodoStore } from './stores/todo';
 export default {
-  name: "App",
+  name: 'App',
   setup() {
     const store = useTodoStore();
     return {
@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     ...mapState(useTodoStore, {
-      nbOfTodo: "countTodos",
+      nbOfTodo: 'countTodos',
     }),
   },
   methods: {
@@ -43,12 +43,12 @@ export default {
       this.store.addTodo(todo);
     },
     clearAllTodos() {
-      console.log("clear");
+      console.log('clear');
       this.store.clearAll();
     },
   },
 };
 </script>
 <style>
-@import "https://unicons.iconscout.com/release/v4.0.0/css/line.css";
+@import 'https://unicons.iconscout.com/release/v4.0.0/css/line.css';
 </style>

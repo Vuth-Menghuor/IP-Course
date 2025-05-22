@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 
-export const useTodoStore = defineStore("todo", {
+export const useTodoStore = defineStore('todo', {
   state: () => ({
     todos: [],
   }),
@@ -14,22 +14,30 @@ export const useTodoStore = defineStore("todo", {
           resolve([
             {
               id: 1,
-              name: "Clean house",
-              description: "cleaning house in detail .....",
-              createdAt: "2024-15-07 07:50:00",
+              name: 'Clean house',
+              description: 'cleaning house in detail .....',
+              createdAt: '2024-15-07 07:50:00',
               completedAt: null,
             },
             {
               id: 2,
-              name: "Do homework",
-              description: "Instruction on doing homework ....",
-              createdAt: "2024-05-07 08:00:00",
-              completedAt: "2024-05-07 08:10:00",
+              name: 'Do homework',
+              description: 'Instruction on doing homework ....',
+              createdAt: '2024-05-07 08:00:00',
+              completedAt: '2024-05-07 08:10:00',
             },
           ]);
         }, 1000);
       }).then((todos) => (this.todos = todos));
     },
+    // async fetchTodos() {
+    //   try {
+    //     const response = await axios.get('http://localhost:3100/tasks');
+    //     this.todo = response.data;
+    //   } catch (error) {
+    //     console.error('Failed to fetch todo:', error);
+    //   }
+    // },
     toggleStatus(id) {
       const foundIndex = this.todos.findIndex((t) => t.id == id);
       if (foundIndex >= 0) {
@@ -44,7 +52,7 @@ export const useTodoStore = defineStore("todo", {
       this.todos.push({
         id: this.todos.length + 1,
         name: todo,
-        description: "description",
+        description: 'description',
         createdAt: new Date().toISOString(),
         completedAt: null,
       });

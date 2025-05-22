@@ -17,23 +17,23 @@
   </ul>
 </template>
 <script>
-import { mapState } from "pinia";
-import TodoItem from "./TodoItem.vue";
-import { useTodoStore } from "../stores/todo";
+import { mapState } from 'pinia';
+import TodoItem from './TodoItem.vue';
+import { useTodoStore } from '../stores/todo';
 
 export default {
   setup() {
     const todoStore = useTodoStore();
     return { todoStore };
   },
-  name: "TodoList",
-  props: ["status"],
+  name: 'TodoList',
+  props: ['status'],
   components: {
     TodoItem,
   },
   data() {
     return {
-      color: "red",
+      color: 'red',
     };
   },
   async mounted() {
@@ -41,7 +41,7 @@ export default {
     await this.todoStore.fetchTodos();
   },
   computed: {
-    ...mapState(useTodoStore, ["todos", "countTodos"]),
+    ...mapState(useTodoStore, ['todos', 'countTodos']),
     completedTasks() {
       if (this.todos) {
         return this.todos.filter((todo) => todo.completedAt != null);
@@ -62,7 +62,7 @@ export default {
     todos: {
       immediate: true,
       handler: function (dataChanged) {
-        console.log("todos are changed");
+        console.log('todos are changed');
       },
     },
   },
