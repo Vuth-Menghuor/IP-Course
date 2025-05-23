@@ -30,22 +30,27 @@ export class TasksController {
 
   @Patch('/:id/done')
   markTaskAsDone(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() body: { name?: string; description?: string },
   ) {
-    return this.taskService.updateTask(id, body);
+    return this.taskService.updateTask(Number(id), body);
   }
 
   @Patch('/:id/pending')
   markTaskAsPending(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() body: { name?: string; description: string },
   ) {
-    return this.taskService.updateTask(id, body);
+    return this.taskService.updateTask(Number(id), body);
   }
 
   @Delete('/:id')
   deleteTask(@Param('id') id: number) {
     return this.taskService.deleteTask(id);
+  }
+
+  @Delete()
+  deleteAllTask() {
+    return this.taskService.deleteAllTasks();
   }
 }

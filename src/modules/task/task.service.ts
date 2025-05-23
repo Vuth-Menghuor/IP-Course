@@ -33,4 +33,13 @@ export class TaskService {
     await this.taskRepo.delete(id);
     return { message: 'Task deleted successfully' };
   }
+  async deleteAllTasks() {
+    await this.taskRepo
+      .createQueryBuilder()
+      .softDelete()
+      .where('true')
+      .execute();
+
+    return { message: 'all tasks deleted' };
+  }
 }
