@@ -1,39 +1,7 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-
-// @Injectable()
-// export class UserService {
-//   createUser(body: any) {
-//     console.log(body);
-//     return {
-//       username: 'Dara',
-//       email: 'dara@gmail.com',
-//       password: '123',
-//     };
-//   }
-//   getUser(username: string) {
-//     console.log(username);
-//     return {
-//       username: 'Dara',
-//       email: 'dara@gmail.com',
-//       password: '123',
-//     };
-//   }
-//   updateUser(body: any) {
-//     console.log(body);
-//     return {
-//       username: 'Dara',
-//       email: 'dara@gmail.com',
-//       password: '123',
-//     };
-//   }
-//   deleteUser(username: string) {
-//     console.log(username);
-//     return { message: 'success' };
-//   }
-// }
+import { User } from './user.entity';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class UsersService {
@@ -51,8 +19,13 @@ export class UsersService {
     return this.usersRepo.find({ relations: ['tasks'] });
   }
 
-  findOne(id: number) {
-    return this.usersRepo.findOne({ where: { id }, relations: ['tasks'] });
+  //TP11
+  async findOne(id: number) {
+    const user = await this.usersRepo.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return user;
   }
 
   async update(id: number, updateData: Partial<User>) {

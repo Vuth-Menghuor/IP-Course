@@ -6,8 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -23,9 +26,16 @@ export class TasksController {
     return this.taskService.getAllTask();
   }
 
-  @Post('/')
-  createTask(@Body() body: any) {
-    return this.taskService.createTask(body);
+  // @Post('/')
+  // createTask(@Body() body: any) {
+  //   return this.taskService.createTask(body);
+  // }
+
+  //TP11
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  create(@Body() CreateTaskDto: CreateTaskDto) {
+    return this.taskService.createTask(CreateTaskDto);
   }
 
   @Patch('/:id/done')

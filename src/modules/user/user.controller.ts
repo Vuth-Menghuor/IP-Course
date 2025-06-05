@@ -47,16 +47,19 @@ import {
   Body,
   Patch,
   Delete,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get('/:id')
-  getUser(@Param('id') id: string) {
-    return this.userService.findOne(Number(id));
+  getUser(@Param('id') id: number) {
+    return this.userService.findOne(id);
   }
 
   @Get()
@@ -64,11 +67,18 @@ export class UsersController {
     return this.userService.findAll();
   }
 
+  // @Post()
+  // createUser(
+  //   @Body() body: { username: string; email: string; password: string },
+  // ) {
+  //   return this.userService.create(body);
+  // }
+
+  //TP11
   @Post()
-  createUser(
-    @Body() body: { username: string; email: string; password: string },
-  ) {
-    return this.userService.create(body);
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
   }
 
   @Patch('/:id')
